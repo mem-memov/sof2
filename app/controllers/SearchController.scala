@@ -6,7 +6,7 @@ import play.api.mvc._
 
 @Singleton
 class SearchController @Inject()(cc: ControllerComponents) extends AbstractController(cc) {
-  def index() = Action { implicit request: Request[AnyContent] =>
-    Ok("111")
+  def index(tags: List[String]) = Action { implicit request: Request[AnyContent] =>
+    Ok("111" + tags.toString())
   }
 }
