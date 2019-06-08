@@ -1,4 +1,4 @@
-name := """sof"""
+name := """sof2"""
 organization := "mem.memov"
 
 version := "1.0-SNAPSHOT"

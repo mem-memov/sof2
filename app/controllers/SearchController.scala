@@ -17,19 +17,22 @@ import akka.util.ByteString
 
 import scala.concurrent.ExecutionContext
 
-
-import scala.util.{Failure, Success}
+import play.api.libs.json._
 
 @Singleton
 class SearchController @Inject()(cc: ControllerComponents, ws: WSClient) extends AbstractController(cc) {
-  def index(tags: List[String]) = Action { implicit request: Request[AnyContent] =>
-    val request: WSRequest = ws.url("https://api.stackexchange.com/2.2/search?pagesize=100&order=desc&sort=creation&tagged=clojure&site=stackoverflow")
+
+  private def buildUrl(tag: String) = "https://api.stackexchange.com/2.2/search?pagesize=100&order=desc&sort=creation&tagged=" + tag + "&site=stackoverflow"
+
+  def index(tags: List[String]) = Action.async {
+    println(tags.toString())
     implicit val ec = ExecutionContext.global
+    val request: WSRequest = ws.url(buildUrl(tags.head))
     val futureResponse: Future[WSResponse] = request.get()
-    futureResponse onComplete {
-      case Success(response) => println(response.json)
-      case Failure(t) => println("An error has occurred: " + t.getMessage)
-    }
-    Ok("tags1: " + tags.toString())
+    futureResponse.map(response =>
+      Ok(response.body.toString)
+    )
   }
 }
+
+
