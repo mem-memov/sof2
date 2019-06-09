@@ -48,7 +48,7 @@ case class StackOverflow(body: String) {
       "answered" -> record.answered
     )))
 
-    JSONObject(records).toString()
+    Json.prettyPrint(Json.parse(JSONObject(records).toString()))
   }
 }
 
