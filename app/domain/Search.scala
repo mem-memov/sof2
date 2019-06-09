@@ -19,7 +19,7 @@ class Search @Inject()(client: WSClient) {
     val futureOfListOfResponses: Future[List[WSResponse]] = Future.sequence(listOfFuturesWhithResponse)
     val futureOfListOfBodies: Future[List[String]] = futureOfListOfResponses.map(
       future => future.map(
-        response => response.body
+        response => StackOverflow(response.body).getStatistics
       )
     )
     futureOfListOfBodies
