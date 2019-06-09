@@ -30,7 +30,7 @@ case class StackOverflow(body: String) {
 
     val statistics = listOfTagOccurrences.foldLeft(Map[String, Statistics]())((map, occurrence) => {
       map.get(occurrence.tag) match {
-        case None => map + (occurrence.tag -> Statistics(total = 0, answered = 0))
+        case None => map + (occurrence.tag -> Statistics(total = 1, answered = if (occurrence.isAnswered) 1 else 0))
         case Some(statistics) => {
           val newStatistics = statistics.copy(
             total = statistics.total + 1,
